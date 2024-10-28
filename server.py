@@ -5,23 +5,18 @@ from datetime import datetime
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/healthz':
-            # Отправляем статус 200 OK
             self.send_response(200)
-
-            # Добавляем заголовки
             self.send_header('Date', self.date_time_string())
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Access-Control-Allow-Credentials', 'true')
             self.end_headers()
 
-            # Создаем ответ с данными
             response = {
                 "status": "healthy",
-                "timestamp": datetime.utcnow().isoformat() + "Z"  # Время в формате ISO 8601
+                "timestamp": datetime.utcnow().isoformat() + "Z"
             }
-
-            # Отправляем ответ
+            
             self.wfile.write(json.dumps(response).encode('utf-8'))
         else:
             self.send_response(404)
